@@ -199,8 +199,8 @@ updateAvailability(); // 🔥 IMPORTANT
     createdAt: new Date().toISOString(),
   };
 
-  orders.push(order);
-  deductInventory(items);
+ orders.push(order);
+  deductStock(items);
 
   io.emit('new_order', order);
 
