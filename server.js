@@ -258,6 +258,33 @@ app.patch('/api/orders/:id/status', (req, res) => {
 app.get('/api/inventory', (req, res) => res.json(inventory));
 
 
+
+// Admin Stats
+app.get('/api/admin/stats', (req, res) => {
+  const totalOrders = orders.length;
+  const totalRevenue = orders.filter(o => o.paid).reduce((s, o) => s + o.total, 0);
+  const pending = orders.filter(o => o.status === 'received').length;
+  const preparing = orders.filter(o => o.status === 'preparing').length;
+  const ready = orders.filter(o => o.status === 'ready').length;
+  const paid = orders.filter(o => o.paid).length;
+  const unpaid = orders.filter(o => !o.paid).length;
+  const lowStockRaw = inventory.filter(i => i.quantity <= i.threshold).length;
+  const lowStockPrepared = preparedStock.filter(i => i.quantity <= i.threshold).length;
+  const paymentBreakdown = orders.reduce((acc, o) => {
+    acc[o.paymentMethod] = (acc[o.paymentMethod] || 0) + 1;
+    return acc;
+  }, {});
+  const itemMap = {};
+  orders.forEach(o => {
+    o.items.forEach(item => {
+      if (!itemMap[item.name]) itemMap[item.name] = { name: item.name, emoji: item.emoji, totalQty: 0, totalRevenue: 0 };
+      itemMap[item.name].totalQty += item.qty;
+      itemMap[item.name].totalRevenue += item.price * item.qty;
+    });
+  });
+  const bestSellers = Object.values(itemMap).sort((a, b) => b.totalQty - a.totalQty).slice(0, 10);
+  res.json({ totalOrders, totalRevenue, pending, preparing, ready, paid, unpaid, received: pending, lowStockRaw, lowStockPrepared, paymentBreakdown, bestSellers });
+});
 // Prepared Stock
 app.get('/api/prepared-stock', (req, res) => res.json(preparedStock));
 
@@ -270,6 +297,33 @@ app.patch('/api/prepared-stock/:id', (req, res) => {
   res.json(item);
 });
 
+
+// Admin Stats
+app.get('/api/admin/stats', (req, res) => {
+  const totalOrders = orders.length;
+  const totalRevenue = orders.filter(o => o.paid).reduce((s, o) => s + o.total, 0);
+  const pending = orders.filter(o => o.status === 'received').length;
+  const preparing = orders.filter(o => o.status === 'preparing').length;
+  const ready = orders.filter(o => o.status === 'ready').length;
+  const paid = orders.filter(o => o.paid).length;
+  const unpaid = orders.filter(o => !o.paid).length;
+  const lowStockRaw = inventory.filter(i => i.quantity <= i.threshold).length;
+  const lowStockPrepared = preparedStock.filter(i => i.quantity <= i.threshold).length;
+  const paymentBreakdown = orders.reduce((acc, o) => {
+    acc[o.paymentMethod] = (acc[o.paymentMethod] || 0) + 1;
+    return acc;
+  }, {});
+  const itemMap = {};
+  orders.forEach(o => {
+    o.items.forEach(item => {
+      if (!itemMap[item.name]) itemMap[item.name] = { name: item.name, emoji: item.emoji, totalQty: 0, totalRevenue: 0 };
+      itemMap[item.name].totalQty += item.qty;
+      itemMap[item.name].totalRevenue += item.price * item.qty;
+    });
+  });
+  const bestSellers = Object.values(itemMap).sort((a, b) => b.totalQty - a.totalQty).slice(0, 10);
+  res.json({ totalOrders, totalRevenue, pending, preparing, ready, paid, unpaid, received: pending, lowStockRaw, lowStockPrepared, paymentBreakdown, bestSellers });
+});
 // Prepared Stock
 app.get('/api/prepared-stock', (req, res) => res.json(preparedStock));
 
@@ -296,4 +350,5 @@ io.on('connection', (socket) => {
 server.listen(5000, () => {
   console.log('Server running on http://localhost:5000');
 });
+
 
