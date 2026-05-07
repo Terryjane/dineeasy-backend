@@ -257,6 +257,30 @@ app.patch('/api/orders/:id/status', (req, res) => {
 // Inventory
 app.get('/api/inventory', (req, res) => res.json(inventory));
 
+
+// Prepared Stock
+app.get('/api/prepared-stock', (req, res) => res.json(preparedStock));
+
+app.patch('/api/prepared-stock/:id', (req, res) => {
+  const item = preparedStock.find(i => i.id === parseInt(req.params.id));
+  if (!item) return res.status(404).json({ error: 'Item not found' });
+  const { quantity, threshold } = req.body;
+  if (quantity !== undefined) item.quantity = parseFloat(quantity);
+  if (threshold !== undefined) item.threshold = parseFloat(threshold);
+  res.json(item);
+});
+
+// Prepared Stock
+app.get('/api/prepared-stock', (req, res) => res.json(preparedStock));
+
+app.patch('/api/prepared-stock/:id', (req, res) => {
+  const item = preparedStock.find(i => i.id === parseInt(req.params.id));
+  if (!item) return res.status(404).json({ error: 'Item not found' });
+  const { quantity, threshold } = req.body;
+  if (quantity !== undefined) item.quantity = parseFloat(quantity);
+  if (threshold !== undefined) item.threshold = parseFloat(threshold);
+  res.json(item);
+});
 // QR
 app.get('/api/qr/:tableId', async (req, res) => {
  const url = `https://profound-hamster-b6f2dd.netlify.app/menu?table=${req.params.tableId}`;
@@ -272,3 +296,4 @@ io.on('connection', (socket) => {
 server.listen(5000, () => {
   console.log('Server running on http://localhost:5000');
 });
+
