@@ -89,19 +89,42 @@ let ratings = [];
 
 // ── Inventory ─────────────────────────────────────────
 let inventory = [
-  { id: 1, name: 'Beef', quantity: 20, unit: 'kg' },
-  { id: 2, name: 'Tilapia', quantity: 15, unit: 'pcs' },
-  { id: 4, name: 'Salt', quantity: 2000, unit: 'g' },
-  { id: 5, name: 'Potatoes', quantity: 30, unit: 'kg' },
-  { id: 6, name: 'Cooking Oil', quantity: 10, unit: 'liters' }
+  { id: 1, name: 'Beef', quantity: 20, unit: 'kg', emoji: '🥩', threshold: 5 },
+  { id: 2, name: 'Tilapia Fish', quantity: 15, unit: 'pcs', emoji: '🐟', threshold: 3 },
+  { id: 3, name: 'Chicken', quantity: 10, unit: 'kg', emoji: '🍗', threshold: 3 },
+  { id: 4, name: 'Salt', quantity: 2000, unit: 'g', emoji: '🧂', threshold: 200 },
+  { id: 5, name: 'Potatoes', quantity: 30, unit: 'kg', emoji: '🥔', threshold: 8 },
+  { id: 6, name: 'Cooking Oil', quantity: 10, unit: 'liters', emoji: '🫙', threshold: 2 },
+  { id: 7, name: 'Rice', quantity: 15, unit: 'kg', emoji: '🍚', threshold: 4 },
+  { id: 8, name: 'Ugali Flour', quantity: 25, unit: 'kg', emoji: '🌾', threshold: 5 },
+  { id: 9, name: 'Sukuma Wiki', quantity: 10, unit: 'kg', emoji: '🥬', threshold: 2 },
+  { id: 10, name: 'Tomatoes', quantity: 8, unit: 'kg', emoji: '🍅', threshold: 2 },
+  { id: 11, name: 'Onions', quantity: 8, unit: 'kg', emoji: '🧅', threshold: 2 },
+  { id: 12, name: 'Milk', quantity: 10, unit: 'liters', emoji: '🥛', threshold: 2 },
+  { id: 13, name: 'Tea Leaves', quantity: 500, unit: 'g', emoji: '🍃', threshold: 100 },
+  { id: 14, name: 'Wheat Flour', quantity: 10, unit: 'kg', emoji: '🌾', threshold: 3 },
+  { id: 15, name: 'Mango/Passion', quantity: 20, unit: 'pcs', emoji: '🥭', threshold: 5 },
+  { id: 16, name: 'Soda (Crates)', quantity: 5, unit: 'crates', emoji: '🥤', threshold: 1 },
+  { id: 17, name: 'Water Bottles', quantity: 48, unit: 'pcs', emoji: '💧', threshold: 12 },
+  { id: 18, name: 'Minced Meat', quantity: 5, unit: 'kg', emoji: '🥩', threshold: 1 },
 ];
 
 let preparedStock = [
-  { id: 1, name: 'Nyama Choma Plate', quantity: 10, unit: 'kg' },
-  { id: 2, name: 'Tilapia Plate', quantity: 8, unit: 'pcs' },
-  { id: 3, name: 'Chips Serving', quantity: 15, unit: 'pcs' }
+  { id: 1, name: 'Nyama Choma Plate', quantity: 10, unit: 'plates', emoji: '🥩', threshold: 3 },
+  { id: 2, name: 'Tilapia Plate', quantity: 8, unit: 'plates', emoji: '🐟', threshold: 2 },
+  { id: 3, name: 'Chicken Biryani', quantity: 6, unit: 'plates', emoji: '🍛', threshold: 2 },
+  { id: 4, name: 'Ugali & Sukuma', quantity: 20, unit: 'plates', emoji: '🌿', threshold: 5 },
+  { id: 5, name: 'Beef Stew', quantity: 12, unit: 'plates', emoji: '🍲', threshold: 3 },
+  { id: 6, name: 'Chapati', quantity: 30, unit: 'pcs', emoji: '🫓', threshold: 10 },
+  { id: 7, name: 'Kachumbari Salad', quantity: 15, unit: 'plates', emoji: '🥗', threshold: 4 },
+  { id: 8, name: 'Chips (Fries)', quantity: 20, unit: 'plates', emoji: '🍟', threshold: 5 },
+  { id: 9, name: 'Mandazi', quantity: 40, unit: 'pcs', emoji: '🍩', threshold: 10 },
+  { id: 10, name: 'Samosa', quantity: 30, unit: 'pcs', emoji: '🥟', threshold: 8 },
+  { id: 11, name: 'Fresh Juice', quantity: 15, unit: 'glasses', emoji: '🥤', threshold: 4 },
+  { id: 12, name: 'Chai (Tea)', quantity: 20, unit: 'cups', emoji: '☕', threshold: 5 },
+  { id: 13, name: 'Soda', quantity: 24, unit: 'pcs', emoji: '🥃', threshold: 6 },
+  { id: 14, name: 'Water', quantity: 48, unit: 'pcs', emoji: '💧', threshold: 10 },
 ];
-
 function deductStock(items) {
   items.forEach(orderItem => {
 
@@ -200,7 +223,7 @@ updateAvailability(); // 🔥 IMPORTANT
   };
 
  orders.push(order);
-  deductStock(items);
+ 
 
   io.emit('new_order', order);
 
