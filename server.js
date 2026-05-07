@@ -236,7 +236,7 @@ app.get('/api/inventory', (req, res) => res.json(inventory));
 
 // QR
 app.get('/api/qr/:tableId', async (req, res) => {
- const url = `http://10.32.7.254:5173/menu?table=${req.params.tableId}`;
+ const url = `https://profound-hamster-b6f2dd.netlify.app/menu?table=${req.params.tableId}`;
   const qr = await QRCode.toDataURL(url);
   res.json({ qr });
 });
